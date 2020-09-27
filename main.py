@@ -8,11 +8,34 @@ def carregar_json():
     with open('dados/encrypted.json', 'r') as f:
         return json.load(f)
 
+
+
+def lista():
+    banco = carregar_json()
+    i=1
+
+    if len(banco) != 0:
+        print("\nEndereços/sites cadastrados:\n")
+
+    for nomes in banco:
+        print()
+        print(str(i) + ": " + nomes)
+        print()
+        i+=1
+
+    if len(banco) == 0:
+        print("\nNenhum cadastro encontrado.\n")
+    else:
+        x = input("\nDeseja lembrar um dos endereços?(S/N)\n")
+        if x == 'S' or x == 's':
+            lembrar()
+
+
 def registrar():
 
     i=0
     while i < 1:
-        print("para sair igite \"sair\" sem as aspas em qualquer uma das repostas seguintes.\n")
+        print("\nPara sair igite \"sair\" sem as aspas em qualquer uma das repostas seguintes.\n")
 
         endereco = input('\nInsira o site/destino da senha (Ex: email, facebook): ')
         print('')
@@ -47,7 +70,7 @@ def registrar():
         senha_escondida = senha_escondida + '*'
         i+=1
 
-    print('Conta registrada com sucesso!\n')
+    print('\nConta registrada com sucesso!\n')
     print(endereco + '\n' + user + '\n' + senha_escondida)
 
 
@@ -56,7 +79,7 @@ def registrar():
 
 
 def lembrar():
-    endereco = input("Insira o endereço/site do qual você deseja lembrar as informações (Ex: email, facebook) ou \"sair\" sem as aspas para sair. \n")
+    endereco = input("\nInsira o endereço/site do qual você deseja lembrar as informações (Ex: email, facebook) ou \"sair\" sem as aspas para sair")
     if endereco == 'sair':
         return
 
@@ -66,42 +89,47 @@ def lembrar():
         dados = banco[endereco]
 
     except:
-        print("essa entrada não existe")
+        print("\nEssa entrada não existe")
 
-    print("\n" + endereco + "\n" + dados[0] + "\n" + dados[1] + "\n")
-    x = input("Deseja receber essas informações?(S/N) ")
+    i=0
+    senha_escondida = ''
+    while i < len(decrypt(dados[1])):
+        senha_escondida = senha_escondida + '*'
+        i+=1
+
+    print("\n" + endereco + "\n" + dados[0] + "\n" + senha_escondida + "\n")
+    x = input("\nDeseja receber essas informações?(S/N) ")
     if x == 's' or x == 'S':
         print("\n" + endereco + "\n" + dados[0] + "\n" + decrypt(dados[1]) + "\n")
 
 if __name__ == "__main__":
 
-#    cripto = encrypt(input("Digite a senha:\n"))
-#    print(cripto)
-#    resposta = input("descriptografar? (S/N)\n")
-#    if resposta == 's':
-#        print(decrypt(cripto))
-
-    print("Bem vindo ao Holocron")
+    print("\nBem vindo ao Holocron\n")
 
     while True:
 
-        resposta = input("para guardar um cadastro digite 1, para lembrar um digite 2, para sair digite 0.\n")
+        resposta = input("\nPara guardar um cadastro digite 1, para lembrar um digite 2, para mostrar a lista de endereços 3, para sair digite 0.\n")
 
         if resposta == '1':
             registrar()
-            x = input("desja realizar outra operação? (S/N) ")
+            x = input("\nDeseja realizar outra operação? (S/N) ")
             if x == "n" or x == "N":
                 break
         elif resposta == '2':
             lembrar()
-            x = input("desja realizar outra operação? (S/N) ")
+            x = input("\nDeseja realizar outra operação? (S/N) ")
+            if x == "n" or x == "N":
+                break
+        elif resposta == '3':
+            lista()
+            x = input("\nDeseja realizar outra operação? (S/N) ")
             if x == "n" or x == "N":
                 break
         elif resposta == '0':
             break
         else:
-            print("Erro, símbolo inserido não reconhecido")
-            x = input("desja realizar outra operação? (S/N) ")
+            print("\nErro, símbolo inserido não reconhecido")
+            x = input("\nDeseja realizar outra operação? (S/N) ")
             if x == "n" or x == "N":
                 break
         
